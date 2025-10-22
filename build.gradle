@@ -5,11 +5,11 @@ plugins {
 // Change the values below this to your mods values
 // To change the project name, edit the settings.gradle file
 
-project.ext.modID = "streetnoodle.autosummon" // The unique id of your mod. Must be all lowercase and cannot use special characters.
-project.ext.modName = "Auto Summon" // The display name of your mod.
-project.ext.modVersion = "1.1" // Your current builds version. Must follow the xx.xx... format.
+project.ext.modID = "streetnoodle.industrialcomposter" // The unique id of your mod. Must be all lowercase and cannot use special characters.
+project.ext.modName = "Industrial Composter" // The display name of your mod.
+project.ext.modVersion = "1.0" // Your current builds version. Must follow the xx.xx... format.
 project.ext.gameVersion = "1.0.1" // The target game version.
-project.ext.modDescription = "Automatically summons using the rightmost staff in your hotbar" // Short description of what your mod is.
+project.ext.modDescription = "Adds a more efficient compost bin" // Short description of what your mod is.
 project.ext.author = "Street Noodle" // Your name
 
 /**
@@ -52,7 +52,7 @@ configurations {
 }
 
 sourceSets.main.output.resourcesDir = file("build/mod/resources/")
-sourceSets.main.java.outputDir = file("build/mod/")
+sourceSets.main.java.destinationDirectory = file("build/mod/")
 sourceSets.main.compileClasspath += configurations.libDepends // Adds libDepends configuration to classpath
 def buildLocation = "build/jar/"
 
@@ -89,7 +89,7 @@ task createModInfoFile(type: JavaExec) {
     classpath = files(gameDirectory + "/Necesse.jar")
 
     main = "CreateModInfoFile"
-    args "-file", "${sourceSets.main.java.outputDir}/mod.info",
+    args "-file", "${sourceSets.main.java.destinationDirectory.get().asFile}/mod.info",
             "-id", "${project.ext.modID}",
             "-name", "${project.ext.modName}",
             "-version", "${project.ext.modVersion}",
@@ -151,10 +151,10 @@ task buildModJar(type: Jar) {
     }
 
     // Add mod output
-    from sourceSets.main.java.outputDir
+    from sourceSets.main.java.destinationDirectory
     // Add the dependencies
     from configurations.libDepends.collect { it.isDirectory() ? it : zipTree(it) }
 
-    archiveName "${jarName}.jar"
-    destinationDir file(buildLocation)
+    archiveFileName = "${jarName}.jar"
+    destinationDirectory = file(buildLocation)
 }

@@ -1,45 +1,54 @@
-# Auto Summon Mod
+# Industrial Composter Mod
 
-A Necesse mod that automatically summons using the rightmost staff in your hotbar when you're below your maximum summon count.
+A Necesse mod that adds an Industrial Composter - a larger, faster version of the standard compost bin.
 
 ## Features
 
-- **Automatic Summoning**: Automatically uses the rightmost summoning staff in your hotbar
-- **Smart Detection**: Only summons when you're below your maximum summon count
-- **Configurable Settings**: Adjust check frequency and other settings
-- **Debug Output**: Optional debug messages to verify the mod is working
+- **Faster Processing**: Processes composting materials 6 times faster than the standard compost bin
+- **1x1 Size**: Same footprint as the standard compost bin
+- **Increased Capacity**: Can queue more crafts at once for efficient bulk processing
+- **Settlement Compatible**: Works as a settlement workstation just like the standard compost bin
 
 ## Installation
 
-1. Download the latest `AutoSummon-1.0.0-1.0.jar` from the releases
+1. Download the latest `IndustrialComposter-1.0.1-1.0.jar` from the releases
 2. Place the JAR file in your Necesse mods folder
 3. Start the game and the mod will be automatically loaded
 
-## Configuration
+## Crafting Recipe
 
-You can modify the settings by editing the `CraftingRangeConfig.java` file before building:
-
-- `SUMMON_CHECK_COOLDOWN`: How often to check for summoning in milliseconds (default: 250ms = 4 times per second)
-- `SCAN_RIGHT_TO_LEFT`: Whether to scan hotbar from right to left for rightmost staff (default: true)
-- `DEBUG_OUTPUT`: Enable/disable debug messages (default: true)
+The Industrial Composter can be crafted at a workstation with:
+- 4x Compost Bin
+- 10x Iron Bar
+- 20x Stone
 
 ## How It Works
 
-The mod patches the `PlayerMob.clientTick` method to:
-1. Check if you're below your maximum summon count
-2. Scan your hotbar from right to left (slots 9 to 0)
-3. Find the first summoning staff that can be used
-4. Automatically use that staff to summon a minion
+The Industrial Composter functions identically to the standard compost bin but with enhanced performance:
+- **Processes items faster** by reducing process time to 1/6 of vanilla (`getProcessTime()` override)
+- **Occupies 1x1 tile** - same size as standard compost bin
+- **4 input slots** - process multiple items simultaneously (vs 1 for standard)
+- **Allows queuing up to 10 crafts at once** (vs 5 for standard)
+- **Custom industrial graphics** - distinct appearance from the standard compost bin
 
 ## Building
 
 To build the mod yourself:
 
 1. Clone this repository
-2. Run `./gradlew buildModJar`
-3. The built JAR will be in `build/jar/`
+2. Ensure the `gameDirectory` path in `build.gradle` points to your Necesse installation
+3. Run `./gradlew buildModJar` (Mac/Linux) or `gradlew.bat buildModJar` (Windows)
+4. The built JAR will be in `build/jar/`
 
 ## Requirements
 
-- Necesse 1.0.0
+- Necesse 1.0.1
 - Java 8 or higher
+
+## Technical Details
+
+The mod consists of:
+- `IndustrialComposterObject`: The GameObject definition with 2x2 multiTile configuration
+- `IndustrialComposterObjectEntity`: Custom entity that overrides `getProcessTime()` to run faster
+- Localization support for English
+- Recipe integration with the vanilla workstation tech
